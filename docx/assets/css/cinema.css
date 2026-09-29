@@ -1,0 +1,637 @@
+@charset "UTF-8";
+/* ==========================================================================
+   CINEMA LAYER — 电影级视觉层（叠加在 style.css 之上，不改动原有样式）
+   --------------------------------------------------------------------------
+   [C1] 变量与开关    [C2] 胶片质感（颗粒 / 暗角 / 黑边）
+   [C3] 开场片头      [C4] 入场揭示（对焦）
+   [C5] 粒子衰变场    [C6] 光斑与卡片立体
+   [C7] 光标 / 场记板 [C8] 转场幕布     [C9] Tweaks 面板
+   [C10] 降级与打印
+   所有效果都可由 Tweaks 面板实时开关；遵守 prefers-reduced-motion。
+   ========================================================================== */
+
+/* ------------------------------------------------------------- [C1] 变量 */
+
+:root {
+  --cine-ease:  cubic-bezier(.22, .78, .24, 1);
+  --cine-expo:  cubic-bezier(.83, 0, .17, 1);
+  --cine-power: 1;              /* 动效强度 0 ~ 1.4，由 Tweaks 控制 */
+  --cine-bar:   0px;            /* 电影黑边高度 */
+  --cine-grain: .05;            /* 胶片颗粒 */
+  --cine-vig:   .30;            /* 暗角 */
+  --cine-film:  #0B0A09;        /* 片头 / 黑边的胶片黑 */
+  --cine-cream: #F1E7DA;        /* 胶片上的字色 */
+}
+
+/* 暗房模式：整页压暗一档，对比与饱和各提一点，像进了放映厅 */
+body.cine-darkroom { filter: contrast(1.06) saturate(1.06); }
+body.cine-darkroom .cine-veil { opacity: .14; }
+
+/* --------------------------------------------------- [C2] 胶片质感图层 */
+
+/* 暗角 */
+.cine-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 93;
+  pointer-events: none;
+  opacity: var(--cine-vig);
+  background:
+    radial-gradient(125% 105% at 50% 46%, transparent 54%, rgba(20, 16, 12, .78) 100%),
+    linear-gradient(180deg, rgba(20, 16, 12, .24), transparent 20%, transparent 80%, rgba(20, 16, 12, .26));
+  transition: opacity .5s var(--cine-ease);
+}
+
+[data-theme="dark"] .cine-vignette {
+  background:
+    radial-gradient(120% 100% at 50% 46%, transparent 40%, rgba(0, 0, 0, .92) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, .45), transparent 20%, transparent 80%, rgba(0, 0, 0, .5));
+}
+
+/* 压暗薄纱（暗房模式用） */
+.cine-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 92;
+  pointer-events: none;
+  opacity: 0;
+  background: #171310;
+  mix-blend-mode: multiply;
+  transition: opacity .6s var(--cine-ease);
+}
+
+/* 胶片颗粒：极轻的一层噪点，缓慢游走 */
+.cine-grain {
+  position: fixed;
+  inset: -60px;
+  z-index: 94;
+  pointer-events: none;
+  opacity: var(--cine-grain);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)' opacity='.55'/%3E%3C/svg%3E");
+  animation: cineGrain 1.1s steps(5, end) infinite;
+  will-change: background-position;
+}
+
+@keyframes cineGrain {
+  0%   { background-position: 0 0; }
+  20%  { background-position: -18px 12px; }
+  40%  { background-position: 14px -20px; }
+  60%  { background-position: -22px -14px; }
+  80%  { background-position: 20px 18px; }
+  100% { background-position: 0 0; }
+}
+
+/* 跟随鼠标的光斑 —— 像一束打在纸面上的暖光 */
+.cine-spot {
+  position: fixed;
+  inset: 0;
+  z-index: 91;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .6s var(--cine-ease);
+  background: radial-gradient(320px circle at var(--cx, 50%) var(--cy, 40%),
+              color-mix(in srgb, var(--seal) 26%, transparent), transparent 68%);
+  mix-blend-mode: soft-light;
+}
+body.cine-spot-on .cine-spot { opacity: .85; }
+
+/* 电影黑边（letterbox） */
+.cine-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: var(--cine-bar);
+  z-index: 95;
+  background: var(--cine-film);
+  pointer-events: none;
+  transition: height .55s var(--cine-expo);
+}
+.cine-bar--t { top: 0; }
+.cine-bar--b { bottom: 0; }
+/* 黑边内侧那一道极细的暖光，像放映机的漏光 */
+.cine-bar--t::after,
+.cine-bar--b::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--seal) 55%, transparent), transparent);
+  opacity: .5;
+}
+.cine-bar--t::after { bottom: 0; }
+.cine-bar--b::after { top: 0; }
+
+/* 开了黑边之后，把固定定位的零件往下（上）挪一格，别被黑边吃掉 */
+body.cine-lb .site-head { top: var(--cine-bar); }
+body.cine-lb .to-top           { bottom: calc(26px + var(--cine-bar)); }
+body.cine-lb .cine-tweak-btn   { bottom: calc(82px + var(--cine-bar)); }
+body.cine-lb .cine-panel       { bottom: calc(132px + var(--cine-bar)); }
+body.cine-lb .cine-slate       { bottom: calc(22px + var(--cine-bar)); }
+body.cine-lb .term             { padding-top: calc(12vh + var(--cine-bar)); }
+html body.cine-lb              { scroll-padding-top: calc(96px + var(--cine-bar)); }
+
+/* -------------------------------------------------------- [C3] 开场片头 */
+
+.cine-open {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: var(--cine-film);
+  color: var(--cine-cream);
+  overflow: hidden;
+}
+.cine-open[hidden] { display: none; }
+
+/* 上下两片幕布：结束时向上下拉开 */
+.cine-gate {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50.2%;
+  background: var(--cine-film);
+  z-index: 3;
+  transition: transform .82s var(--cine-expo);
+}
+.cine-gate--t { top: 0; }
+.cine-gate--b { bottom: 0; }
+.cine-gate::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: color-mix(in srgb, var(--seal) 70%, transparent);
+  opacity: .28;                          /* 播放时只是一道若有若无的中线 */
+  transition: opacity .5s var(--cine-ease);
+}
+.cine-gate--t::after { bottom: 0; }
+.cine-gate--b::after { top: 0; }
+.cine-open.is-out .cine-gate::after { opacity: 1; }   /* 拉开那一刻亮起来 */
+
+.cine-open.is-out .cine-gate--t { transform: translateY(-100%); }
+.cine-open.is-out .cine-gate--b { transform: translateY(100%); }
+
+.cine-open-inner {
+  position: relative;
+  z-index: 4;                    /* 必须高于上下幕布，否则片头会被幕布盖黑 */
+  text-align: center;
+  padding: 0 24px;
+  transition: opacity .5s var(--cine-ease), transform .6s var(--cine-ease);
+}
+.cine-open.is-out .cine-open-inner { opacity: 0; transform: scale(1.03); }
+
+/* 压印的印章 */
+.cine-seal {
+  display: grid;
+  place-items: center;
+  width: 74px;
+  height: 74px;
+  margin: 0 auto 30px;
+  font-size: 2.05rem;
+  font-weight: 700;
+  color: #FFF6EE;
+  background: var(--seal);
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25), 0 0 60px -8px rgba(192, 67, 42, .8);
+  opacity: 0;
+  transform: scale(1.85) rotate(-9deg);
+}
+.cine-open.is-play .cine-seal {
+  animation: cineStamp .62s var(--cine-expo) forwards;
+}
+@keyframes cineStamp {
+  0%   { opacity: 0; transform: scale(1.85) rotate(-9deg); }
+  60%  { opacity: 1; transform: scale(.94) rotate(1.5deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+/* 片名：逐字从雾里浮出来 */
+.cine-title {
+  display: flex;
+  justify-content: center;
+  gap: .06em;
+  margin: 0;
+  font-size: clamp(2.6rem, 9vw, 5.4rem);
+  font-weight: 800;
+  letter-spacing: .16em;
+  line-height: 1;
+  text-indent: .16em;
+}
+.cine-title span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(.42em) rotate(4deg);
+  filter: blur(14px);
+}
+.cine-open.is-play .cine-title span {
+  animation: cineGlyph .9s var(--cine-expo) forwards;
+}
+@keyframes cineGlyph {
+  0%   { opacity: 0; transform: translateY(.42em) rotate(4deg); filter: blur(14px); }
+  100% { opacity: 1; transform: none; filter: blur(0); }
+}
+
+/* 副题：打字机 + 光标 */
+.cine-sub {
+  margin: 22px 0 0;
+  font-family: var(--font-mono);
+  font-size: clamp(10px, 2.6vw, 13px);
+  letter-spacing: .42em;
+  text-transform: uppercase;
+  color: rgba(241, 231, 218, .62);
+  min-height: 1.4em;
+}
+.cine-sub::after {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 1em;
+  margin-left: .35em;
+  background: var(--seal);
+  vertical-align: -.14em;
+  animation: cineCaret .8s steps(1, end) infinite;
+}
+.cine-open.is-done .cine-sub::after { animation: none; opacity: 0; }
+@keyframes cineCaret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+/* 底部演职员信息条 */
+.cine-credit {
+  margin-top: 34px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(241, 231, 218, .38);
+  opacity: 0;
+  transition: opacity .8s var(--cine-ease) .1s;
+}
+.cine-open.is-play .cine-credit { opacity: 1; }
+
+/* 顶部进度条：片头在走完之前不会挡住你 */
+.cine-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: rgba(241, 231, 218, .12);
+  z-index: 6;
+}
+.cine-progress i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--seal);
+  transition: width .2s linear;
+}
+
+.cine-skip {
+  position: absolute;
+  right: 22px;
+  top: 22px;
+  z-index: 7;
+  padding: 8px 14px;
+  border: 1px solid rgba(241, 231, 218, .28);
+  border-radius: 2px;
+  background: transparent;
+  color: rgba(241, 231, 218, .72);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .5s var(--cine-ease) .5s, color .2s, border-color .2s;
+}
+.cine-open.is-play .cine-skip { opacity: 1; }
+.cine-skip:hover { color: #FFF6EE; border-color: var(--seal); }
+
+/* ------------------------------------------------------- [C4] 入场揭示 */
+
+/* 只有 JS 接管后才隐藏元素，避免脚本失效时内容不可见 */
+.cine-on .cine-r {
+  opacity: 0;
+  transform: translate3d(0, calc(26px * var(--cine-power)), 0);
+  filter: blur(calc(6px * var(--cine-power)));
+  transition:
+    opacity .95s var(--cine-ease),
+    transform 1.05s var(--cine-ease),
+    filter .95s var(--cine-ease);
+  transition-delay: calc(var(--i, 0) * 85ms);
+  will-change: opacity, transform, filter;
+}
+.cine-on .cine-r.is-in {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+/* 纯平移版本（正文段落用，不上模糊，保证可读性） */
+.cine-on .cine-r--soft { filter: none; transform: translate3d(0, calc(12px * var(--cine-power)), 0); }
+
+/* 标题的「镜头对焦」 */
+.cine-on .cine-focus {
+  opacity: 0;
+  filter: blur(calc(9px * var(--cine-power)));
+  transform: translate3d(0, calc(10px * var(--cine-power)), 0);
+  transition: opacity .8s var(--cine-ease), filter .9s var(--cine-ease), transform .9s var(--cine-ease);
+}
+.cine-on .cine-focus.is-in { opacity: 1; filter: blur(0); transform: none; }
+
+/* ------------------------------------------------------ [C5] 粒子衰变场 */
+
+.cine-field {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s var(--cine-ease);
+  -webkit-mask-image: radial-gradient(120% 100% at 30% 40%, #000 42%, transparent 92%);
+          mask-image: radial-gradient(120% 100% at 30% 40%, #000 42%, transparent 92%);
+}
+.cine-field.is-live { opacity: 1; }
+.hero-main, .now-card, .hero-side { position: relative; z-index: 1; }
+
+/* ------------------------------------------------- [C6] 光斑与卡片立体 */
+
+.cine-tilt {
+  transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+  transform-style: preserve-3d;
+  transition: transform .5s var(--cine-ease), box-shadow .35s var(--cine-ease);
+}
+.cine-tilt.is-live { transition: transform .12s linear, box-shadow .35s var(--cine-ease); }
+.cine-tilt:hover {
+  transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
+             translate3d(0, calc(-4px * var(--cine-power)), 0);
+  box-shadow: var(--shadow-2);
+}
+
+/* 卡面上那一道跟着鼠标走的釉光 */
+.cine-sheen { position: relative; overflow: hidden; }
+.cine-sheen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%),
+              rgba(255, 255, 255, .55), transparent 62%);
+  mix-blend-mode: soft-light;
+  transition: opacity .35s var(--cine-ease);
+}
+.cine-sheen:hover::before { opacity: .9; }
+
+/* ---------------------------------------------------- [C7] 光标 / 场记板 */
+
+.cine-cursor, .cine-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 150;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity .3s var(--cine-ease);
+}
+.cine-cursor {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 1px solid color-mix(in srgb, var(--seal) 60%, transparent);
+  transition: opacity .3s var(--cine-ease), width .28s var(--cine-ease), height .28s var(--cine-ease),
+              margin .28s var(--cine-ease), border-color .28s, background-color .28s;
+}
+.cine-cursor-dot {
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  background: var(--seal);
+}
+body.cine-cursor-on .cine-cursor,
+body.cine-cursor-on .cine-cursor-dot { opacity: 1; }
+body.cine-cursor-on .cine-cursor.is-hot {
+  width: 54px;
+  height: 54px;
+  margin: -27px 0 0 -27px;
+  background: color-mix(in srgb, var(--seal) 14%, transparent);
+  border-color: var(--seal);
+}
+@media (hover: none), (pointer: coarse) {
+  .cine-cursor, .cine-cursor-dot { display: none; }
+}
+
+/* 场记板：时间码 + 场次名 */
+.cine-slate {
+  position: fixed;
+  left: 26px;
+  bottom: 22px;
+  z-index: 88;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .6s var(--cine-ease), transform .6s var(--cine-ease);
+}
+body.cine-slate-on .cine-slate { opacity: 1; transform: none; }
+.cine-slate .tc {
+  padding: 4px 8px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--paper) 76%, transparent);
+  color: var(--seal);
+  font-variant-numeric: tabular-nums;
+  backdrop-filter: blur(6px);
+}
+@media (max-width: 680px) { .cine-slate { display: none; } }
+
+/* -------------------------------------------------------- [C8] 转场幕布 */
+
+.cine-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 190;
+  display: grid;
+  place-items: center;
+  background: var(--cine-film);
+  transform: translateY(100%);
+  pointer-events: none;
+}
+.cine-wipe.is-run {
+  pointer-events: auto;
+  animation: cineWipeIn .52s var(--cine-expo) forwards;
+}
+.cine-wipe.is-end { animation: cineWipeOut .5s var(--cine-expo) forwards; }
+@keyframes cineWipeIn  { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes cineWipeOut { from { transform: translateY(0); } to { transform: translateY(-100%); } }
+
+.cine-wipe span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: rgba(241, 231, 218, .55);
+}
+
+/* ------------------------------------------------------- [C9] Tweaks 面板 */
+
+.cine-tweak-btn {
+  position: fixed;
+  right: 26px;
+  bottom: 82px;
+  z-index: 120;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background: var(--paper-rise);
+  color: var(--ink-2);
+  cursor: pointer;
+  box-shadow: var(--shadow-1);
+  transition: color .2s, border-color .2s, transform .25s var(--cine-ease);
+}
+.cine-tweak-btn:hover { color: var(--seal); border-color: var(--seal); transform: translateY(-3px); }
+.cine-tweak-btn svg { width: 17px; height: 17px; }
+
+.cine-panel {
+  position: fixed;
+  right: 26px;
+  bottom: 132px;
+  z-index: 121;
+  width: 268px;
+  padding: 18px 18px 16px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--paper-rise) 94%, transparent);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-2);
+  font-size: 12px;
+  opacity: 0;
+  transform: translateY(10px) scale(.98);
+  pointer-events: none;
+  transition: opacity .26s var(--cine-ease), transform .26s var(--cine-ease);
+}
+.cine-panel.is-open { opacity: 1; transform: none; pointer-events: auto; }
+
+.cine-panel h5 {
+  margin: 0 0 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.cine-panel .hint { margin: 0 0 16px; font-size: 11px; color: var(--ink-3); line-height: 1.7; }
+
+.cine-row { display: grid; gap: 6px; margin-bottom: 13px; }
+.cine-row label {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11.5px;
+  color: var(--ink-2);
+}
+.cine-row label b { font-family: var(--font-mono); font-weight: 400; color: var(--seal); font-size: 10.5px; }
+
+.cine-panel input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--rule);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+.cine-panel input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--seal);
+  border: 2px solid var(--paper-rise);
+  box-shadow: 0 0 0 1px var(--seal);
+  cursor: pointer;
+}
+.cine-panel input[type="range"]::-moz-range-thumb {
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--seal); border: 2px solid var(--paper-rise); cursor: pointer;
+}
+
+.cine-switches { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+
+.cine-sw {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 7px 9px;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--ink-3);
+  font-size: 11px;
+  cursor: pointer;
+  text-align: left;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.cine-sw::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--rule);
+  transition: background .2s, box-shadow .2s;
+}
+.cine-sw.is-on { color: var(--ink); border-color: color-mix(in srgb, var(--seal) 45%, var(--rule)); }
+.cine-sw.is-on::after { background: var(--seal); box-shadow: 0 0 0 3px var(--seal-wash); }
+.cine-sw:hover { border-color: var(--ink-3); }
+
+.cine-panel .cine-acts { display: flex; gap: 8px; margin-top: 14px; }
+.cine-panel button.act {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--ink-2);
+  font-size: 11px;
+  cursor: pointer;
+  transition: color .2s, border-color .2s;
+}
+.cine-panel button.act:hover { color: var(--seal); border-color: var(--seal); }
+
+@media (max-width: 680px) {
+  .cine-panel { right: 16px; left: 16px; width: auto; bottom: 126px; }
+  .cine-tweak-btn { right: 16px; bottom: 76px; }
+}
+
+/* ---------------------------------------------------- [C10] 降级与打印 */
+
+@media (prefers-reduced-motion: reduce) {
+  .cine-grain { animation: none; }
+  .cine-open { display: none !important; }
+  .cine-on .cine-r,
+  .cine-on .cine-focus { opacity: 1 !important; filter: none !important; transform: none !important; }
+  .cine-wipe { display: none !important; }
+  .cine-sub::after { animation: none; }
+}
+
+@media print {
+  .cine-vignette, .cine-grain, .cine-bar, .cine-spot, .cine-slate,
+  .cine-tweak-btn, .cine-panel, .cine-wipe, .cine-open,
+  .cine-cursor, .cine-cursor-dot, .cine-field { display: none !important; }
+}

@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>关于我 · 于松 · Java 后端开发</title>
+<meta name="description" content="于松，南宁师范大学软件工程本科在读，求职方向 Java 后端开发。项目经历、专业技能、AI 原生开发工作流，以及这个网站是怎么用 Vibe Coding 做出来的。">
+<meta name="theme-color" content="#F5F0E6">
+<meta name="author" content="于松">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='7' fill='%23C0432A'/%3E%3Ctext x='32' y='46' font-size='40' text-anchor='middle' fill='%23FFF6EE' font-family='Songti SC,SimSun,serif'%3E%E6%9D%BE%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/cinema.css">
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem('hl-theme');
+    var q = location.search.match(/[?&]theme=(dark|light)/);
+    if (q) t = q[1];
+    if (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark';
+    if (t) document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+})();
+</script>
+</head>
+<body data-page="about">
+
+<a class="sr-only" href="#main">跳到正文</a>
+
+<header class="site-head">
+  <div class="wrap head-inner">
+    <a class="brand" href="index.html" aria-label="于松 首页">
+      <span class="seal-mark" aria-hidden="true">松</span>
+      <span class="brand-text">
+        <strong>于松</strong>
+        <em>halflife.log</em>
+      </span>
+    </a>
+
+    <nav class="site-nav" aria-label="主导航">
+      <a href="index.html">首页</a>
+      <a href="archive.html">文章</a>
+      <a href="about.html" aria-current="page">关于</a>
+    </nav>
+
+    <div class="head-tools">
+      <button class="icon-btn is-text" type="button" data-term aria-label="打开终端彩蛋" title="终端（快捷键 `）">~</button>
+      <button class="icon-btn js-theme" type="button" aria-label="切换主题" title="切换主题（快捷键 T）">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="scroll-line" aria-hidden="true"></div>
+</header>
+
+<main id="main">
+
+  <!-- 页头 ============================================================= -->
+  <section class="page-head">
+    <div class="wrap">
+      <p class="kicker">About · 关于我</p>
+      <h1>于松<span class="h1-sub">软件工程本科在读 · Java 后端开发方向</span></h1>
+      <p class="lede">
+        我系统学过数据结构、操作系统、数据库和计算机网络，也把 Spring Boot 这一套从需求分析、
+        系统设计到测试调试完整走过几遍。做项目时我有一个固定习惯：<strong>先把数据怎么流想清楚，再动手写代码。</strong>
+      </p>
+
+      <div class="pill-row">
+        <span class="status-pill"><span class="dot" aria-hidden="true"></span>求职中 · 2027 届实习 / 校招</span>
+        <span class="status-pill status-pill--ai"><span class="dot" aria-hidden="true"></span>本站由 Vibe Coding 构建</span>
+      </div>
+
+      <ul class="fact-row">
+        <li><b>求职意向</b><span>Java 后端开发工程师</span></li>
+        <li><b>教育背景</b><span>南宁师范大学 · 软件工程 · 本科</span></li>
+        <li><b>在校时间</b><span>2023.09 – 2027.06</span></li>
+        <li><b>所在地</b><span>辽宁大连（可接受异地实习）</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 正文 ============================================================= -->
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-body">
+
+        <h2 id="self">自我评价</h2>
+        <p>
+          软件工程专业本科在读，方向是 Java 后端开发。系统学习过数据结构、操作系统、数据库原理及
+          Java 后端开发相关课程，具备扎实的编程基础与软件工程思维；在校期间多次参与课程项目，
+          熟悉从需求分析、系统设计、编码实现到测试调试的完整开发流程。
+        </p>
+        <p>
+          学习能力强，上手新技术快。除此之外，我有一个自己比较看重的能力：
+          <strong>我已经把 AI 融进了日常开发流程</strong>——用大模型做需求拆解、生成骨架、写测试用例、
+          以及提交前的第一轮代码评审。我理解的「会用 AI 写代码」不是让它替我思考，
+          而是把它当成一个随时在线的结对伙伴，判断和取舍仍然由我负责。
+        </p>
+
+        <h2 id="edu">教育经历</h2>
+        <div class="cv-entry">
+          <div class="cv-head">
+            <h3>南宁师范大学 <em>软件工程 · 本科</em></h3>
+            <span class="cv-time">2023.09 – 2027.06</span>
+          </div>
+          <ul class="cv-points">
+            <li>主修软件工程核心课程，涵盖数据结构、操作系统、数据库原理、计算机网络及人工智能基础；</li>
+            <li>专业课程成绩优良，具备一定的算法设计与系统实现能力；</li>
+            <li>课程之外持续做项目与写技术笔记，把课堂上学的概念落到能跑起来的系统里。</li>
+          </ul>
+        </div>
+
+        <h2 id="skill">专业技能</h2>
+        <ul class="kbd-list">
+          <li><b>后端</b><span>Java 语言特性；Spring Boot 快速构建后端服务；MyBatis / MyBatis-Plus 持久层开发；Spring Security 权限控制</span></li>
+          <li><b>数据库</b><span>MySQL：常用 SQL 编写、索引优化与事务处理；Redis：缓存设计、BitMap / Hash 等数据结构的实际使用</span></li>
+          <li><b>中间件</b><span>RabbitMQ 异步解耦、消费端幂等与最终一致性方案；延时队列处理高频低价值写入</span></li>
+          <li><b>前端</b><span>HTML5 / CSS3 / JavaScript（ES6+）；Vue.js 框架，具备组件化开发思维</span></li>
+          <li><b>工具</b><span>IntelliJ IDEA、VS Code、Git、Maven</span></li>
+          <li><b>AI 协作</b><span>把大模型用于需求拆解、接口设计、样板代码生成、单元测试与 Code Review，已形成稳定的日常工作流</span></li>
+        </ul>
+
+        <h2 id="projects">项目经历</h2>
+
+        <div class="cv-entry">
+          <div class="cv-head">
+            <h3>职达课堂 <em>在线教育平台 · 后端开发</em></h3>
+            <span class="cv-time">2025.01 – 2025.06</span>
+          </div>
+          <p class="cv-stack">
+            <span>Spring Boot</span><span>Spring Security</span><span>MyBatis-Plus</span>
+            <span>Redis</span><span>RabbitMQ</span><span>MySQL</span>
+          </p>
+          <ul class="cv-points">
+            <li>负责课程与视频学习模块：使用 Redis 缓存课程热度与播放进度，基于 DelayQueue 实现断点续播与学习记录定时持久化，降低数据库写入压力。</li>
+            <li>设计并实现问答社区模块：支持匿名 / 实名提问与回答，完成积分奖励计算，并通过 RabbitMQ 异步同步到积分系统。</li>
+            <li>负责点赞与收藏服务：使用 Redis + 定时任务实现点赞计数异步落库，提升高并发场景下的响应速度与数据一致性。</li>
+            <li>实现用户签到与积分体系：采用 BitMap 高效存储签到记录，通过 MQ 推送签到数据，保障积分数据最终一致性。</li>
+          </ul>
+          <p class="cv-links">
+            <a href="post.html?p=zhida-classroom">相关笔记：《职达课堂：一个课程项目教会我的三件事》</a> ·
+            <a href="post.html?p=bitmap-signin">《用一个 BitMap 存下整个月的签到记录》</a>
+          </p>
+        </div>
+
+        <div class="cv-entry">
+          <div class="cv-head">
+            <h3>图书管理系统 <em>Java 后端</em></h3>
+            <span class="cv-time">2024.06 – 2024.12</span>
+          </div>
+          <p class="cv-stack"><span>Java</span><span>Spring Boot</span><span>MySQL</span></p>
+          <ul class="cv-points">
+            <li>基于 Java + Spring Boot 实现图书入库、借阅、归还、查询及用户权限管理等核心模块。</li>
+            <li>采用 MySQL 进行数据持久化设计，练习 SQL 优化与事务处理，加深对关系型数据库的理解。</li>
+            <li>参与小组代码评审与文档撰写，积累了基本的团队协作与工程规范意识。</li>
+            <li>在评审中重构了借阅流程：把校验从 Controller 下沉到 Service，用事务加行锁解决并发下的超借问题。</li>
+          </ul>
+          <p class="cv-links">
+            <a href="post.html?p=library-system-review">相关笔记：《图书管理系统：第一次被人认真挑错》</a>
+          </p>
+        </div>
+
+        <h2 id="ai">AI 原生开发能力</h2>
+        <p>
+          「AI 原生」这个词现在很常见，我给自己设了一个很朴素的检验标准：
+          <strong>如果把 AI 从我的流程里拿掉，我会明显变慢。</strong>
+          现在的实际情况是，从拿到需求到代码进仓库，它稳定地出现在六个环节里。
+        </p>
+
+        <div class="ai-panel">
+          <h3>我的六个环节</h3>
+          <p class="ai-sub">不是「偶尔用一下工具」，而是流程本身就长成这样</p>
+          <ol class="ai-list">
+            <li>
+              <b>需求拆解</b>
+              <p>把模糊需求交给它反向提问，让它先问我十个问题。很多边界（比如「匿名提问的积分算给谁」）是被它的提问逼出来的。</p>
+            </li>
+            <li>
+              <b>接口先行</b>
+              <p>先定 Controller / Service 的方法签名与出入参，改到满意再写实现，后面的编码基本是填空题。</p>
+            </li>
+            <li>
+              <b>骨架与样板</b>
+              <p>实体、Mapper、DTO、参数校验这类代码交给它，我专注在真正需要做决定的业务规则上。</p>
+            </li>
+            <li>
+              <b>先写测试</b>
+              <p>让它先写测试用例，逼自己把「什么算对」说明白。实现写完再补测试，只是把 bug 翻译成断言。</p>
+            </li>
+            <li>
+              <b>Code Review</b>
+              <p>提交前让它以严格评审者的身份过一遍：空指针、并发、事务边界、N+1 查询。设计是否过度，仍然由我判断。</p>
+            </li>
+            <li>
+              <b>文档沉淀</b>
+              <p>调试超过半小时的问题，整理成一段可复用的文档，再去掉一半废话。</p>
+            </li>
+          </ol>
+        </div>
+
+        <p>
+          在这套流程里，我给自己定了两条硬规矩：
+          <strong>不复制看不懂的代码、关键路径必须自己写一遍。</strong>
+          凡是写进简历的东西，我都要能讲清楚它的取舍——这也是我觉得在 AI 时代最不能被替代的部分。
+        </p>
+        <p>
+          延伸方向：正在学习如何把大模型能力接进后端服务（提示词组织、工具调用与向量检索的基本流程），
+          目标是在业务系统里真正落地，而不只是停留在调用一个 API。
+        </p>
+
+        <h2 id="built">这个网站是怎么来的</h2>
+
+        <div class="vibe-note">
+          <span class="seal-mark" aria-hidden="true">松</span>
+          <div>
+            <p>
+              <b>这个网站是用 Vibe Coding 的方式做出来的</b>：我负责提出需求、判断好坏、决定取舍，
+              AI 负责把它翻译成代码，我们一轮一轮改到满意。
+            </p>
+            <p>
+              它是纯静态的——没有框架、没有构建工具、没有 CDN、没有第三方脚本，所有插图都是 CSS 画的，
+              字体用的是系统自带的。断网能打开，打印也是完整的。
+            </p>
+          </div>
+        </div>
+
+        <p style="margin-top:24px">
+          我把整个过程和我的判断标准写在了这篇文章里：
+          <a href="post.html?p=vibe-coding-this-site">《这个网站，是我和 AI 一起写出来的》</a>。
+          如果你想知道我平时怎么和 AI 协作，那篇比这一页更具体。
+        </p>
+
+        <h2 id="writing">关于写东西</h2>
+        <p>
+          这个站点上的文章阅读量大概是个位数，但我还是坚持写。原因很实际：
+          <strong>写出来才知道自己会不会。</strong>
+          一个知识点在脑子里的时候是模糊的，只有试着讲给别人听，才会暴露那些其实没想清楚的地方。
+        </p>
+        <p>
+          对面试也有帮助：简历上写「熟悉 Redis」，面试官只能继续追问；
+          而写清楚「我用 BitMap 存签到，代价是连续天数要额外计算」，对话就变成了技术讨论。
+          因为坑都写在里面了，我不太担心被问到答不上来。
+        </p>
+      </div>
+
+      <!-- 侧栏 =========================================================== -->
+      <aside class="rail">
+        <div class="card-lite">
+          <h4>联系方式</h4>
+          <ul class="contact-list">
+            <li>
+              <b>邮箱</b>
+              <a href="mailto:17615124530@163.com">17615124530@163.com</a>
+            </li>
+            <li>
+              <b>所在地</b>
+              <span>辽宁大连</span>
+            </li>
+            <li>
+              <b>求职意向</b>
+              <span>Java 后端开发 · 2027 届</span>
+            </li>
+            <li>
+              <b>到岗时间</b>
+              <span>可实习时间灵活，寒暑假可长期</span>
+            </li>
+          </ul>
+          <a class="btn" href="assets/yu-song-resume.pdf" download>下载简历 PDF <span aria-hidden="true">↓</span></a>
+        </div>
+
+        <nav class="rail-nav" aria-label="本页内容">
+          <h4>本页内容</h4>
+          <ol>
+            <li><a href="#self">自我评价</a></li>
+            <li><a href="#edu">教育经历</a></li>
+            <li><a href="#skill">专业技能</a></li>
+            <li><a href="#projects">项目经历</a></li>
+            <li><a href="#ai">AI 原生开发能力</a></li>
+            <li><a href="#built">这个网站是怎么来的</a></li>
+            <li><a href="#writing">关于写东西</a></li>
+          </ol>
+        </nav>
+      </aside>
+    </div>
+
+    <hr class="rule" style="margin-bottom:56px">
+
+    <div class="sec-head">
+      <h2 class="sec-title">想聊聊？ <span class="en">/ say hi</span></h2>
+    </div>
+    <p style="max-width:34rem;color:var(--ink-2);line-height:1.9">
+      我目前正在找 2027 届的 Java 后端开发实习与校招机会。
+      如果你对我的项目、或者上面那套 AI 协作流程有想聊的，欢迎直接发邮件——
+      也可以在这个页面按一下 <span class="mono">~</span> 看看我做的小玩具。
+    </p>
+    <p style="margin:26px 0 88px;display:flex;gap:12px;flex-wrap:wrap">
+      <a class="btn" href="mailto:17615124530@163.com">写封邮件 <span aria-hidden="true">→</span></a>
+      <a class="btn btn--ghost" href="archive.html">读几篇笔记</a>
+      <button class="btn btn--ghost" type="button" data-term>打开终端 <span aria-hidden="true">~</span></button>
+    </p>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="seal-mark" aria-hidden="true">松</span>
+        <p>
+          半衰期 / halflife.log —— 于松的项目复盘与技术笔记。
+          建站方式：Vibe Coding，与 AI 结对完成，全站无框架、无外部依赖。
+        </p>
+      </div>
+      <div class="foot-col">
+        <h4>浏览</h4>
+        <ul>
+          <li><a href="index.html">首页</a></li>
+          <li><a href="archive.html">全部文章</a></li>
+          <li><a href="about.html">关于我</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>在别处</h4>
+        <ul>
+          <li><a href="mailto:17615124530@163.com">邮箱</a></li>
+          <li><a href="assets/yu-song-resume.pdf" download>简历 PDF</a></li>
+          <!-- TODO: 换成你的 GitHub 主页，例如 https://github.com/yourname -->
+          <li><a href="post.html?p=ai-native-workflow">AI 工作流</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 于松 · 内容原创，转载请注明出处</span>
+      <span>Vibe Coding 构建 · 手写 HTML · 按 ~ 打开终端</span>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" type="button" aria-label="回到顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<div class="term" role="dialog" aria-label="终端" aria-hidden="true">
+  <div class="term-window">
+    <div class="term-bar">
+      <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span>yusong@halflife: ~</span>
+    </div>
+    <div class="term-body"></div>
+    <div class="term-input-row">
+      <span class="ps1">$</span>
+      <input type="text" aria-label="输入命令" spellcheck="false" autocomplete="off" placeholder="输入 help 看可用命令">
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/posts.js"></script>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/cinema.js"></script>
+</body>
+</html>

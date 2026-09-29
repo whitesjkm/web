@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>于松 · Java 后端开发 · 半衰期</title>
+<meta name="description" content="于松的个人站点：南宁师范大学软件工程本科在读，求职方向 Java 后端开发。项目复盘、技术笔记，以及一个把 AI 当日常搭档的人是怎么写代码的。">
+<meta name="theme-color" content="#F5F0E6">
+<meta name="author" content="于松">
+<meta property="og:title" content="于松 · Java 后端开发">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='7' fill='%23C0432A'/%3E%3Ctext x='32' y='46' font-size='40' text-anchor='middle' fill='%23FFF6EE' font-family='Songti SC,SimSun,serif'%3E%E6%9D%BE%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/cinema.css">
+<script>
+/* 在首次绘制前定好主题，避免白闪 */
+(function () {
+  try {
+    var t = localStorage.getItem('hl-theme');
+    var q = location.search.match(/[?&]theme=(dark|light)/);
+    if (q) t = q[1];
+    if (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark';
+    if (t) document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+})();
+</script>
+</head>
+<body data-page="home">
+
+<a class="sr-only" href="#main">跳到正文</a>
+
+<!-- 页头 ================================================================ -->
+<header class="site-head">
+  <div class="wrap head-inner">
+    <a class="brand" href="index.html" aria-label="于松 首页">
+      <span class="seal-mark" aria-hidden="true">松</span>
+      <span class="brand-text">
+        <strong>于松</strong>
+        <em>halflife.log</em>
+      </span>
+    </a>
+
+    <nav class="site-nav" aria-label="主导航">
+      <a href="index.html" aria-current="page">首页</a>
+      <a href="archive.html">文章</a>
+      <a href="about.html">关于</a>
+    </nav>
+
+    <div class="head-tools">
+      <button class="icon-btn is-text" type="button" data-term aria-label="打开终端彩蛋" title="终端（快捷键 `）">~</button>
+      <button class="icon-btn js-theme" type="button" aria-label="切换主题" title="切换主题（快捷键 T）">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="scroll-line" aria-hidden="true"></div>
+</header>
+
+<main id="main">
+
+  <!-- 开场 ============================================================== -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-main">
+        <p class="kicker">Java 后端开发 · 2027 届 · 南宁师范大学</p>
+        <h1>把系统做稳，<br><span class="hl">把问题想透</span>。</h1>
+        <p class="lede">
+          我是于松，软件工程专业本科在读。这里放着我的项目复盘、踩过的坑，
+          以及一个把 AI 当成日常搭档的人，是怎么写代码的。
+        </p>
+        <div class="hero-actions">
+          <a class="btn" href="#featured">看我的项目 <span aria-hidden="true">→</span></a>
+          <a class="btn btn--ghost" href="archive.html">全部文章</a>
+          <a class="btn btn--ghost" href="about.html">关于我 / 简历</a>
+        </div>
+        <p class="marginalia">↑ 这句话是我在改第八版简历的那个晚上定下来的</p>
+      </div>
+
+      <aside class="now-card" aria-labelledby="now-title">
+        <div class="now-head">
+          <span class="dot" aria-hidden="true"></span>
+          <span id="now-title">此刻 / now</span>
+        </div>
+        <ul class="now-list">
+          <li><b>在找</b><span>2027 届 Java 后端开发实习 / 校招机会，随时可聊</span></li>
+          <li><b>在做</b><span>把职达课堂的问答模块重构成更清晰的分层，并补上一批单元测试</span></li>
+          <li><b>在学</b><span>Spring Cloud 的分布式事务，以及把大模型能力接进业务系统的后端写法</span></li>
+          <li><b>在用</b><span>AI 结对开发已经是每天的默认工作方式，从需求拆解到 Code Review</span></li>
+        </ul>
+        <p class="now-foot">last updated · 2026-09-16</p>
+      </aside>
+
+      <div class="hero-side" aria-hidden="true">
+        <span class="seal-mark">印</span>
+        <span class="vertical">夜行手记</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 精选 ============================================================== -->
+  <section class="sec" id="featured">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="sec-title">精选 <span class="en">/ featured</span></h2>
+        <a class="sec-more" href="archive.html">按时间看全部 →</a>
+      </div>
+      <div class="feature-grid" data-featured></div>
+    </div>
+  </section>
+
+  <div class="wrap"><hr class="rule"></div>
+
+  <!-- 最近 ============================================================== -->
+  <section class="sec sec--tight">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="sec-title">最近更新 <span class="en">/ recent</span></h2>
+        <span class="mono muted">共 <b data-count>8</b> 篇</span>
+      </div>
+      <ul class="post-list" data-recent></ul>
+    </div>
+  </section>
+
+  <div class="wrap"><hr class="rule"></div>
+
+  <!-- 关于本站 ========================================================== -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="sec-title">关于这个站点 <span class="en">/ about</span></h2>
+        <a class="sec-more" href="about.html">关于我 / 简历 →</a>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-body">
+          <p>
+            「半衰期」原本是个物理词，指放射性物质衰变一半所需要的时间。我用它提醒自己：
+            <strong>脑子里大部分想法都在衰减，只有少数会留下来。</strong>
+            这个博客就是那个留下来的部分。
+          </p>
+          <p>
+            它没有广告、没有推荐算法，也不追求流量。全站是纯静态的：三个 HTML 文件、一个样式表和一个数据文件，
+            不依赖任何外部资源，断网也打得开。这件事本身也是我想展示的一部分——
+            <strong>它是我和一个 AI 结对、用 Vibe Coding 的方式一点点写出来的</strong>，
+            我负责判断与取舍，它负责实现。
+          </p>
+          <p>
+            如果你是来看简历的，可以直接去
+            <a href="about.html">关于我</a>，那里有我的教育经历、技能栈、项目经历和 AI 原生工作流。
+          </p>
+        </div>
+
+        <aside class="stamp-card">
+          <span class="seal-mark" aria-hidden="true">松</span>
+          <p>写于深夜，<br>读于任何时候。</p>
+          <p class="sig">halflife.log · est. 2025</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- 页脚 ================================================================ -->
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="seal-mark" aria-hidden="true">松</span>
+        <p>
+          半衰期 / halflife.log —— 于松的项目复盘与技术笔记。
+          建站方式：Vibe Coding，与 AI 结对完成，全站无框架、无外部依赖。
+        </p>
+      </div>
+      <div class="foot-col">
+        <h4>浏览</h4>
+        <ul>
+          <li><a href="index.html">首页</a></li>
+          <li><a href="archive.html">全部文章</a></li>
+          <li><a href="about.html">关于我</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>在别处</h4>
+        <ul>
+          <li><a href="mailto:17615124530@163.com">邮箱</a></li>
+          <li><a href="assets/yu-song-resume.pdf" download>简历 PDF</a></li>
+          <!-- TODO: 换成你的 GitHub 主页，例如 https://github.com/yourname -->
+          <li><a href="post.html?p=ai-native-workflow">AI 工作流</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 于松 · 内容原创，转载请注明出处</span>
+      <span>Vibe Coding 构建 · 手写 HTML · 按 ~ 打开终端</span>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" type="button" aria-label="回到顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<!-- 终端彩蛋 ============================================================ -->
+<div class="term" role="dialog" aria-label="终端" aria-hidden="true">
+  <div class="term-window">
+    <div class="term-bar">
+      <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span>yusong@halflife: ~</span>
+    </div>
+    <div class="term-body"></div>
+    <div class="term-input-row">
+      <span class="ps1">$</span>
+      <input type="text" aria-label="输入命令" spellcheck="false" autocomplete="off" placeholder="输入 help 看可用命令">
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/posts.js"></script>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/cinema.js"></script>
+</body>
+</html>

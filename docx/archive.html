@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>全部文章 · 于松</title>
+<meta name="description" content="于松的技术笔记：项目复盘、Redis 与 Spring Boot 实践，以及 AI 原生开发工作流。">
+<meta name="theme-color" content="#F5F0E6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='7' fill='%23C0432A'/%3E%3Ctext x='32' y='46' font-size='40' text-anchor='middle' fill='%23FFF6EE' font-family='Songti SC,SimSun,serif'%3E%E6%9D%BE%3C/text%3E%3C/svg%3E">
+<meta name="author" content="于松">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/cinema.css">
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem('hl-theme');
+    var q = location.search.match(/[?&]theme=(dark|light)/);
+    if (q) t = q[1];
+    if (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark';
+    if (t) document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+})();
+</script>
+</head>
+<body data-page="archive">
+
+<a class="sr-only" href="#main">跳到正文</a>
+
+<header class="site-head">
+  <div class="wrap head-inner">
+    <a class="brand" href="index.html" aria-label="于松 首页">
+      <span class="seal-mark" aria-hidden="true">松</span>
+      <span class="brand-text">
+        <strong>于松</strong>
+        <em>halflife.log</em>
+      </span>
+    </a>
+
+    <nav class="site-nav" aria-label="主导航">
+      <a href="index.html">首页</a>
+      <a href="archive.html" aria-current="page">文章</a>
+      <a href="about.html">关于</a>
+    </nav>
+
+    <div class="head-tools">
+      <button class="icon-btn is-text" type="button" data-term aria-label="打开终端彩蛋" title="终端（快捷键 `）">~</button>
+      <button class="icon-btn js-theme" type="button" aria-label="切换主题" title="切换主题（快捷键 T）">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="scroll-line" aria-hidden="true"></div>
+</header>
+
+<main id="main">
+  <div class="page-head">
+    <div class="wrap">
+      <p class="kicker">Archive</p>
+      <h1>全部文章</h1>
+      <p class="lede">
+        按时间倒序排列。写得不快，但每一篇都是我确实想清楚了才放上来的——
+        大部分是项目复盘，也有一部分在讲我怎么和 AI 一起写代码。
+      </p>
+    </div>
+  </div>
+
+  <div class="wrap" style="padding-bottom:88px">
+    <div class="toolbar">
+      <label class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
+        <input type="search" data-search placeholder="搜索标题、摘要或标签" aria-label="搜索文章">
+      </label>
+      <div class="chips" data-chips role="group" aria-label="按标签筛选"></div>
+    </div>
+
+    <div data-archive></div>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="seal-mark" aria-hidden="true">松</span>
+        <p>
+          半衰期 / halflife.log —— 于松的项目复盘与技术笔记。
+          建站方式：Vibe Coding，与 AI 结对完成，全站无框架、无外部依赖。
+        </p>
+      </div>
+      <div class="foot-col">
+        <h4>浏览</h4>
+        <ul>
+          <li><a href="index.html">首页</a></li>
+          <li><a href="archive.html">全部文章</a></li>
+          <li><a href="about.html">关于我</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>在别处</h4>
+        <ul>
+          <li><a href="mailto:17615124530@163.com">邮箱</a></li>
+          <li><a href="assets/yu-song-resume.pdf" download>简历 PDF</a></li>
+          <!-- TODO: 换成你的 GitHub 主页，例如 https://github.com/yourname -->
+          <li><a href="post.html?p=ai-native-workflow">AI 工作流</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 于松 · 内容原创，转载请注明出处</span>
+      <span>Vibe Coding 构建 · 手写 HTML · 按 ~ 打开终端</span>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" type="button" aria-label="回到顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<div class="term" role="dialog" aria-label="终端" aria-hidden="true">
+  <div class="term-window">
+    <div class="term-bar">
+      <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span>yusong@halflife: ~</span>
+    </div>
+    <div class="term-body"></div>
+    <div class="term-input-row">
+      <span class="ps1">$</span>
+      <input type="text" aria-label="输入命令" spellcheck="false" autocomplete="off" placeholder="输入 help 看可用命令">
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/posts.js"></script>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/cinema.js"></script>
+</body>
+</html>
